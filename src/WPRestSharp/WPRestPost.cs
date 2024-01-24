@@ -25,7 +25,7 @@ namespace WPRestSharp
             set;
         }
 
-        public WPRenderableText Guid
+        public WPRestRenderableText Guid
         {
             get;
             set;
@@ -61,13 +61,13 @@ namespace WPRestSharp
             set;
         }
 
-        public WPRenderableText Title
+        public WPRestRenderableText Title
         {
             get;
             set;
         }
 
-        public WPRenderableText Content
+        public WPRestRenderableText Content
         {
             get;
             set;

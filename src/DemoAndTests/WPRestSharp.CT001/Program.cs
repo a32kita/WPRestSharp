@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Net;
+using System.Runtime.CompilerServices;
 
 namespace WPRestSharp.CT001
 {
@@ -20,6 +21,16 @@ namespace WPRestSharp.CT001
             var posts = wpSv.Posts.GetAsync().Result;
             var categories = wpSv.Categories.GetAsync().Result;
 
+            Console.WriteLine("ファイルのアップロード中 ...");
+            var timeCodeStr = DateTime.Now.ToString("yyyyMMdd-HHmmss-fff");
+            WPRestMedia newMedia = null;
+            using (var httpClient = new HttpClient())
+            using (var hres = httpClient.GetAsync("https://placehold.jp/3d4070/ffffff/600x300.png?text=" + Uri.EscapeDataString(timeCodeStr)).Result)
+            using (var mediaFile = new WPRestMediaFile(hres.Content.ReadAsStream(), timeCodeStr + "-" + Guid.NewGuid().ToString().Split('-').Last() + ".png", "image/png"))
+            {
+                newMedia = wpSv.Media.PostAsync(mediaFile).Result;
+            }
+
             var rndCategory = categories.ToArray()[new Random().Next(categories.Count() - 1) + 1];
 
             Console.WriteLine("記事投稿中 ...");
@@ -27,8 +38,8 @@ namespace WPRestSharp.CT001
             {
                 Status = "publish",
                 Slug = DateTime.Now.ToString("yyyyMMdd-HHmmss-fff_") + Guid.NewGuid().ToString().Split('-').Last(),
-                Title = new WPRenderableText() { Raw = DateTime.Now + ": テスト記事" },
-                Content = new WPRenderableText() { Raw = "ほげえええええ" },
+                Title = new WPRestRenderableText() { Raw = DateTime.Now + ": テスト記事" },
+                Content = new WPRestRenderableText() { Raw = "ほげえええええ" },
                 Categories = new WPRestCategoryId[]
                 {
                     //new WPRestCategoryId() { Value = 0 },

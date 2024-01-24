@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace WPRestSharp
 {
-    public class WPRenderableText
+    public class WPRestRenderableText
     {
         public string Raw
         {

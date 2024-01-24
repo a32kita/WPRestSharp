@@ -32,6 +32,12 @@ namespace WPRestSharp
             private set;
         }
 
+        public WPMediaEndpoint Media
+        {
+            get;
+            private set;
+        }
+
 
         private WPRestService()
         {
@@ -46,6 +52,7 @@ namespace WPRestSharp
             this.Users = new WPUserEndpoint(this._httpClient, connectionInfo);
             this.Posts = new WPPostEndpoint(this._httpClient, connectionInfo);
             this.Categories = new WPCategoryEndpoint(this._httpClient, connectionInfo);
+            this.Media = new WPMediaEndpoint(this._httpClient, connectionInfo);
         }
 
 
