@@ -79,6 +79,18 @@ namespace WPRestSharp
             set;
         }
 
+        public WPRestReactionStatus? CommentStatus
+        {
+            get;
+            set;
+        }
+
+        public WPRestReactionStatus? PingStatus
+        {
+            get;
+            set;
+        }
+
         public WPRestCategoryId[] Categories
         {
             get;

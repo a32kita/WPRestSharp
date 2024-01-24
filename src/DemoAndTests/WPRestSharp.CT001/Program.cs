@@ -45,7 +45,9 @@ namespace WPRestSharp.CT001
                 {
                     //new WPRestCategoryId() { Value = 0 },
                     rndCategory.Id
-                }
+                },
+                CommentStatus = WPRestReactionStatus.Closed,
+                PingStatus = WPRestReactionStatus.Open,
             }).Result;
 #endif
 

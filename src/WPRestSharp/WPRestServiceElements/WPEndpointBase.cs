@@ -25,8 +25,8 @@ namespace WPRestSharp.WPRestServiceElements
             this._connectionInfo = connectionInfo;
             this._serializerOptions = new JsonSerializerOptions()
             {
-                //PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-                PropertyNamingPolicy = new JsonSeparatedLowerNamingPolicyImpl('_'),
+                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+                //PropertyNamingPolicy = new JsonSeparatedLowerNamingPolicyImpl('_'),
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
 #if DEBUG
                 WriteIndented = true,
@@ -38,6 +38,7 @@ namespace WPRestSharp.WPRestServiceElements
             this._serializerOptions.Converters.Add(new WPRestUserId.JsonConverter());
             this._serializerOptions.Converters.Add(new WPRestMediaId.JsonConverter());
             this._serializerOptions.Converters.Add(new WPRestStatus_Converter());
+            this._serializerOptions.Converters.Add(new WPRestReactionStatus_Converter());
         }
 
 
@@ -48,7 +49,7 @@ namespace WPRestSharp.WPRestServiceElements
 
         private async Task<StreamContent> _getStreamContent<T>(T obj)
         {
-#if FALSE
+#if !DEBUG
             var ms = new MemoryStream();
             JsonSerializer.Serialize(ms, obj, this._serializerOptions);
 #else
