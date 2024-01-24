@@ -1,8 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyVersion>$([System.DateTime]::Now.ToString('0.yy.M.dHH'))</AssemblyVersion>
+    <FileVersion>$([System.DateTime]::Now.ToString('0.yy.M.dHH'))</FileVersion>
+    <Authors>Explorers of the Binary World / a32kita</Authors>
+    <Company>Explorers of the Binary World / a32kita</Company>
+    <PackAsTool>True</PackAsTool>
+    <Version>$([System.DateTime]::Now.ToString('0.yy.M.dHH'))-alpha-$([System.DateTime]::Now.ToString('mmss'))$([System.Guid]::NewGuid.ToString().Replace("-", "").Substring(0, 5))</Version>
+    <Title>WPRestSharp</Title>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- <None Include="https:\github.com\a32kita\WPRestSharp" /> -->
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="8.0.1" />
