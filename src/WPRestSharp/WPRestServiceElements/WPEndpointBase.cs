@@ -8,6 +8,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
+using WPRestSharp.InternalImpls;
+
 namespace WPRestSharp.WPRestServiceElements
 {
     public abstract class WPEndpointBase
@@ -23,7 +25,8 @@ namespace WPRestSharp.WPRestServiceElements
             this._connectionInfo = connectionInfo;
             this._serializerOptions = new JsonSerializerOptions()
             {
-                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+                //PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+                PropertyNamingPolicy = new JsonSeparatedLowerNamingPolicyImpl('_'),
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
 #if DEBUG
                 WriteIndented = true,
@@ -45,7 +48,7 @@ namespace WPRestSharp.WPRestServiceElements
 
         private async Task<StreamContent> _getStreamContent<T>(T obj)
         {
-#if TRUE
+#if FALSE
             var ms = new MemoryStream();
             JsonSerializer.Serialize(ms, obj, this._serializerOptions);
 #else
