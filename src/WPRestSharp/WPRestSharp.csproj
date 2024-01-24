@@ -6,16 +6,27 @@
     <FileVersion>$([System.DateTime]::Now.ToString('0.yy.M.dHH'))</FileVersion>
     <Authors>Explorers of the Binary World / a32kita</Authors>
     <Company>Explorers of the Binary World / a32kita</Company>
-    <PackAsTool>True</PackAsTool>
+    <PackAsTool>False</PackAsTool>
     <Version>$([System.DateTime]::Now.ToString('0.yy.M.dHH'))</Version>
     <Title>WPRestSharp</Title>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/a32kita/WPRestSharp</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/a32kita/WPRestSharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>WordPress</PackageTags>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <Version>$([System.DateTime]::Now.ToString('0.yy.M.dHH'))-alpha-$([System.DateTime]::Now.ToString('mmss'))$([System.Guid]::NewGuid.ToString().Replace("-", "").Substring(0, 5))</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="8.0.1" />
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="7.0.3" />
   </ItemGroup>
 
 </Project>
