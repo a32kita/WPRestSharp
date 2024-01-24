@@ -39,5 +39,10 @@ namespace WPRestSharp
         //        writer.WriteStringValue(valueStr);
         //    }
         //}
+
+        public override string ToString()
+        {
+            return String.IsNullOrEmpty(this.Rendered) ? this.Raw : this.Rendered;
+        }
     }
 }

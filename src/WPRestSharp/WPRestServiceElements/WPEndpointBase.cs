@@ -34,6 +34,7 @@ namespace WPRestSharp.WPRestServiceElements
             this._serializerOptions.Converters.Add(new WPRestPostId.JsonConverter());
             this._serializerOptions.Converters.Add(new WPRestUserId.JsonConverter());
             this._serializerOptions.Converters.Add(new WPRestMediaId.JsonConverter());
+            this._serializerOptions.Converters.Add(new WPRestStatus_Converter());
         }
 
 

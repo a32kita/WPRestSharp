@@ -49,7 +49,7 @@ namespace WPRestSharp
             set;
         }
 
-        public string Status
+        public WPRestStatus? Status
         {
             get;
             set;

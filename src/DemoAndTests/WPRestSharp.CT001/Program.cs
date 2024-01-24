@@ -16,6 +16,7 @@ namespace WPRestSharp.CT001
                 ;
             var wpSv = WPRestService.CreateAsync(connInfo).Result;
 
+#if TRUE
             Console.WriteLine("各種情報取得中 ...");
             var users = wpSv.Users.GetAsync().Result;
             var posts = wpSv.Posts.GetAsync().Result;
@@ -36,7 +37,7 @@ namespace WPRestSharp.CT001
             Console.WriteLine("記事投稿中 ...");
             var newPost = wpSv.Posts.PostAsync(new WPRestPost()
             {
-                Status = "publish",
+                Status = WPRestStatus.Publish,
                 Slug = DateTime.Now.ToString("yyyyMMdd-HHmmss-fff_") + Guid.NewGuid().ToString().Split('-').Last(),
                 Title = new WPRestRenderableText() { Raw = DateTime.Now + ": テスト記事" },
                 Content = new WPRestRenderableText() { Raw = "ほげえええええ" },
@@ -46,6 +47,9 @@ namespace WPRestSharp.CT001
                     rndCategory.Id
                 }
             }).Result;
+#endif
+
+            //var targetPost = wpSv.Posts.GetAsync(new WPRestPostId() { Value = 1 }).Result;
 
             Console.WriteLine("完了");
             Console.ReadLine();
