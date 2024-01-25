@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WPRestSharp.WPRestServiceElements;
 
 namespace WPRestSharp
 {
@@ -49,7 +48,7 @@ namespace WPRestSharp
             set;
         }
 
-        public string Status
+        public WPRestStatus? Status
         {
             get;
             set;

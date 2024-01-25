@@ -14,6 +14,16 @@ namespace WPRestSharp.WPRestServiceElements
             // NOP
         }
 
+        public async Task<IEnumerable<WPRestMedia>> GetAsync()
+        {
+            return await this.HttpGetAsync<WPVoidParameter, WPRestMedia[]>("media", new WPVoidParameter());
+        }
+
+        public async Task<WPRestMedia> GetAsync(WPRestMediaId id)
+        {
+            return await this.HttpGetAsync<WPVoidParameter, WPRestMedia>("media/" + id.ToString(), new WPVoidParameter());
+        }
+
         public async Task<WPRestMedia> PostAsync(WPRestMediaFile mediaFile)
         {
             return await this.HttpPostFileAsync<WPRestMedia>("media", mediaFile);

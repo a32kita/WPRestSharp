@@ -19,6 +19,11 @@ namespace WPRestSharp.WPRestServiceElements
             return await this.HttpGetAsync<WPVoidParameter, WPRestPost[]>("posts", new WPVoidParameter());
         }
 
+        public async Task<WPRestPost> GetAsync(WPRestPostId id)
+        {
+            return await this.HttpGetAsync<WPVoidParameter, WPRestPost>("posts/" + id.ToString(), new WPVoidParameter());
+        }
+
         public async Task<WPRestPost> PostAsync(WPRestPost post)
         {
             return await this.HttpPostAsync<WPRestPost, WPRestPost>("posts", post);

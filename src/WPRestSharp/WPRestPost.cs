@@ -43,7 +43,7 @@ namespace WPRestSharp
             set;
         }
 
-        public string Status
+        public WPRestStatus? Status
         {
             get;
             set;
@@ -74,6 +74,18 @@ namespace WPRestSharp
         }
 
         public WPRestUserId? Author
+        {
+            get;
+            set;
+        }
+
+        public WPRestReactionStatus? CommentStatus
+        {
+            get;
+            set;
+        }
+
+        public WPRestReactionStatus? PingStatus
         {
             get;
             set;
