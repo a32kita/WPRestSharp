@@ -2,29 +2,23 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WPRestSharp.WPRestServiceElements
+namespace WPRestSharp
 {
-    public class WPRestMediaDetails
+    public class WPRestMediaSizedPatterns
     {
-        public int Width
+        public WPRestMediaSizedContent Medium
         {
             get;
             set;
         }
 
-        public int Height
+        public WPRestMediaSizedContent Thumbnail
         {
             get;
             set;
         }
 
-        public string File
-        {
-            get;
-            set;
-        }
-
-        public uint Filesize
+        public WPRestMediaSizedContent Full
         {
             get;
             set;

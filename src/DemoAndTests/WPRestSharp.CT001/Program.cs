@@ -21,6 +21,7 @@ namespace WPRestSharp.CT001
             var users = wpSv.Users.GetAsync().Result;
             var posts = wpSv.Posts.GetAsync().Result;
             var categories = wpSv.Categories.GetAsync().Result;
+            var medias = wpSv.Media.GetAsync().Result;
 
             Console.WriteLine("ファイルのアップロード中 ...");
             var timeCodeStr = DateTime.Now.ToString("yyyyMMdd-HHmmss-fff");

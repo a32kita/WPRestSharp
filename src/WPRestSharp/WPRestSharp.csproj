@@ -15,6 +15,7 @@
     <RepositoryUrl>https://github.com/a32kita/WPRestSharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>WordPress</PackageTags>
+    <Description>WPRestSharp is client library for utilize WordPress REST API.</Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <Version>$([System.DateTime]::Now.ToString('0.yy.M.dHH'))-alpha-$([System.DateTime]::Now.ToString('mmss'))$([System.Guid]::NewGuid.ToString().Replace("-", "").Substring(0, 5))</Version>
