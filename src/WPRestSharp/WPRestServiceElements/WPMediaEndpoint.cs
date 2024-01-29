@@ -16,17 +16,22 @@ namespace WPRestSharp.WPRestServiceElements
 
         public async Task<IEnumerable<WPRestMedia>> GetAsync()
         {
-            return await this.HttpGetAsync<WPVoidParameter, WPRestMedia[]>("media", new WPVoidParameter());
+            return await this.HttpGetAsync<WPVoidParameter, WPRestMedia[]>("media", EmptyDictionary, new WPVoidParameter());
         }
 
-        public async Task<WPRestMedia> GetAsync(WPRestMediaId id)
+        public async Task<WPRestMedia> GetAsync(WPRestMediaQueryParameter parameter)
         {
-            return await this.HttpGetAsync<WPVoidParameter, WPRestMedia>("media/" + id.ToString(), new WPVoidParameter());
+            return await this.HttpGetAsync<WPVoidParameter, WPRestMedia>("media", parameter.ToDictionary(), new WPVoidParameter());
+        }
+
+        public async Task<WPRestMedia> GetAsync(WPRestMediaId id, WPRestMediaQueryParameter parameter)
+        {
+            return await this.HttpGetAsync<WPVoidParameter, WPRestMedia>("media/" + id.ToString(), parameter.ToDictionary(), new WPVoidParameter());
         }
 
         public async Task<WPRestMedia> PostAsync(WPRestMediaFile mediaFile)
         {
-            return await this.HttpPostFileAsync<WPRestMedia>("media", mediaFile);
+            return await this.HttpPostFileAsync<WPRestMedia>("media", EmptyDictionary, mediaFile);
         }
     }
 }

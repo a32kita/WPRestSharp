@@ -16,7 +16,7 @@ namespace WPRestSharp.WPRestServiceElements
 
         public async Task<IEnumerable<WPRestUser>> GetAsync()
         {
-            return await this.HttpGetAsync<WPVoidParameter, WPRestUser[]>("users", new WPVoidParameter());
+            return await this.HttpGetAsync<WPVoidParameter, WPRestUser[]>("users", EmptyDictionary, new WPVoidParameter());
         }
     }
 }
