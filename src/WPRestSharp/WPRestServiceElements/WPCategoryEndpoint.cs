@@ -16,7 +16,7 @@ namespace WPRestSharp.WPRestServiceElements
 
         public async Task<IEnumerable<WPRestCategory>> GetAsync()
         {
-            return await this.HttpGetAsync<WPVoidParameter, WPRestCategory[]>("categories", new WPVoidParameter());
+            return await this.HttpGetAsync<WPVoidParameter, WPRestCategory[]>("categories", EmptyDictionary, new WPVoidParameter());
         }
     }
 }

@@ -16,17 +16,22 @@ namespace WPRestSharp.WPRestServiceElements
 
         public async Task<IEnumerable<WPRestPost>> GetAsync()
         {
-            return await this.HttpGetAsync<WPVoidParameter, WPRestPost[]>("posts", new WPVoidParameter());
+            return await this.HttpGetAsync<WPVoidParameter, WPRestPost[]>("posts", EmptyDictionary, new WPVoidParameter());
         }
 
-        public async Task<WPRestPost> GetAsync(WPRestPostId id)
+        public async Task<IEnumerable<WPRestPost>> GetAsync(WPRestPostQueryParameter parameter)
         {
-            return await this.HttpGetAsync<WPVoidParameter, WPRestPost>("posts/" + id.ToString(), new WPVoidParameter());
+            return await this.HttpGetAsync<WPVoidParameter, WPRestPost[]>("posts", parameter.ToDictionary(), new WPVoidParameter());
+        }
+
+        public async Task<WPRestPost> GetAsync(WPRestPostId id, WPRestPostQueryParameter parameter)
+        {
+            return await this.HttpGetAsync<WPVoidParameter, WPRestPost>("posts/" + id.ToString(), parameter.ToDictionary(), new WPVoidParameter());
         }
 
         public async Task<WPRestPost> PostAsync(WPRestPost post)
         {
-            return await this.HttpPostAsync<WPRestPost, WPRestPost>("posts", post);
+            return await this.HttpPostAsync<WPRestPost, WPRestPost>("posts", EmptyDictionary, post);
         }
     }
 }

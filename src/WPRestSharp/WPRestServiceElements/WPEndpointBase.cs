@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Text.Json;
@@ -17,7 +20,9 @@ namespace WPRestSharp.WPRestServiceElements
         private HttpClient _httpClient;
         private WPRestConnectionInfo _connectionInfo;
         private JsonSerializerOptions _serializerOptions;
-        
+
+        internal static IReadOnlyDictionary<String, String> EmptyDictionary;
+
 
         internal WPEndpointBase(HttpClient httpClient, WPRestConnectionInfo connectionInfo)
         {
@@ -41,10 +46,19 @@ namespace WPRestSharp.WPRestServiceElements
             this._serializerOptions.Converters.Add(new WPRestReactionStatus_Converter());
         }
 
-
-        private string _getFullUrl(string endpoint)
+        static WPEndpointBase()
         {
-            return this._connectionInfo.BaseUrl + "/wp-json/wp/v2/" + endpoint;
+            EmptyDictionary = new Dictionary<String, String>();
+        }
+
+
+        private string _getFullUrl(string endpoint, IReadOnlyDictionary<String, String> queryParameter)
+        {
+            var uriParameterPart = String.Empty;
+            if (queryParameter.Count > 0)
+                uriParameterPart = "?" + String.Join("&", queryParameter.Select(kvp => kvp.Key + "=" + Uri.EscapeDataString(kvp.Value)));
+
+            return this._connectionInfo.BaseUrl + "/wp-json/wp/v2/" + endpoint + uriParameterPart;
         }
 
         private async Task<StreamContent> _getStreamContent<T>(T obj)
@@ -66,12 +80,6 @@ namespace WPRestSharp.WPRestServiceElements
             stContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             return stContent;
         }
-
-        //private async Task<Stream> _getResponseStreamAsync(HttpRequestMessage hreq)
-        //{
-        //    var hres = await this._httpClient.SendAsync(hreq);
-        //    return await hres.Content.ReadAsStreamAsync();
-        //}
 
         private void _addingAuthInfo(HttpRequestMessage hreq)
         {
@@ -98,10 +106,10 @@ namespace WPRestSharp.WPRestServiceElements
             }
         }
 
-        private async Task<TResp> _sendRequestAsync<TParam, TResp>(string endpoint, HttpMethod method, TParam param)
+        private async Task<TResp> _sendRequestAsync<TParam, TResp>(string endpoint, IReadOnlyDictionary<string, string> queryParameter, HttpMethod method, TParam param)
         {
             using (var reqContent = await this._getStreamContent(param))
-            using (var hreq = new HttpRequestMessage(method, this._getFullUrl(endpoint)))
+            using (var hreq = new HttpRequestMessage(method, this._getFullUrl(endpoint, queryParameter)))
             {
                 this._addingAuthInfo(hreq);
                 if (param is WPVoidParameter == false)
@@ -109,31 +117,18 @@ namespace WPRestSharp.WPRestServiceElements
                     hreq.Content = reqContent;
                 }
 
-                //using (var hres = await this._httpClient.SendAsync(hreq))
-                //using (var respStream = await hres.Content.ReadAsStreamAsync())
-                //{
-                //    if (hres.IsSuccessStatusCode == true)
-                //        return JsonSerializer.Deserialize<TResp>(respStream, this._serializerOptions);
-
-                //    using (var sr = new StreamReader(respStream))
-                //    {
-                //        var errorMessage = JsonSerializer.Deserialize<WPRestErrorMessage>(respStream, this._serializerOptions);
-                //        throw new WPRestException(errorMessage);
-                //    }
-                //}
-
                 return await this._executeRequestAsync<TResp>(hreq);
             }
         }
 
-        private async Task<TResp> _sendFileAsync<TResp>(string endpoint, HttpMethod method, Stream contentStream, string contentType, string fileName)
+        private async Task<TResp> _sendFileAsync<TResp>(string endpoint, IReadOnlyDictionary<string, string> queryParameter, HttpMethod method, Stream contentStream, string contentType, string fileName)
         {
             using (var fileContent = new StreamContent(contentStream))
             using (var reqContent = new MultipartFormDataContent())
             {
                 reqContent.Add(fileContent, "file", fileName);
 
-                using (var hreq = new HttpRequestMessage(method, this._getFullUrl(endpoint)))
+                using (var hreq = new HttpRequestMessage(method, this._getFullUrl(endpoint, queryParameter)))
                 {
                     this._addingAuthInfo(hreq);
                     hreq.Content = reqContent;
@@ -143,19 +138,19 @@ namespace WPRestSharp.WPRestServiceElements
             }
         }
 
-        protected async Task<TResp> HttpGetAsync<TParam, TResp>(string endpoint, TParam param)
+        protected async Task<TResp> HttpGetAsync<TParam, TResp>(string endpoint, IReadOnlyDictionary<string, string> queryParameter, TParam param)
         {
-            return await this._sendRequestAsync<TParam, TResp>(endpoint, HttpMethod.Get, param);
+            return await this._sendRequestAsync<TParam, TResp>(endpoint, queryParameter, HttpMethod.Get, param);
         }
 
-        protected async Task<TResp> HttpPostAsync<TParam, TResp>(string endpoint, TParam param)
+        protected async Task<TResp> HttpPostAsync<TParam, TResp>(string endpoint, IReadOnlyDictionary<string, string> queryParameter, TParam param)
         {
-            return await this._sendRequestAsync<TParam, TResp>(endpoint, HttpMethod.Post, param);
+            return await this._sendRequestAsync<TParam, TResp>(endpoint, queryParameter, HttpMethod.Post, param);
         }
 
-        protected async Task<TResp> HttpPostFileAsync<TResp>(string endpoint, WPRestMediaFile file)
+        protected async Task<TResp> HttpPostFileAsync<TResp>(string endpoint, IReadOnlyDictionary<string, string> queryParameter, WPRestMediaFile file)
         {
-            return await this._sendFileAsync<TResp>(endpoint, HttpMethod.Post, file.BaseStream, file.ContentType, file.FileName);
+            return await this._sendFileAsync<TResp>(endpoint, queryParameter, HttpMethod.Post, file.BaseStream, file.ContentType, file.FileName);
         }
     }
 }

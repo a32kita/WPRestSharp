@@ -19,9 +19,11 @@ namespace WPRestSharp.CT001
 #if TRUE
             Console.WriteLine("各種情報取得中 ...");
             var users = wpSv.Users.GetAsync().Result;
-            var posts = wpSv.Posts.GetAsync().Result;
+            var post = wpSv.Posts.GetAsync(67, new()).Result;
+            var posts = wpSv.Posts.GetAsync(new() { PerPage = 5, Order = WPRestQueryOrder.Asc }).Result;
             var categories = wpSv.Categories.GetAsync().Result;
-            var medias = wpSv.Media.GetAsync().Result;
+            var media = wpSv.Media.GetAsync(40, new()).Result;
+            var mediaCol = wpSv.Media.GetAsync().Result;
 
             Console.WriteLine("ファイルのアップロード中 ...");
             var timeCodeStr = DateTime.Now.ToString("yyyyMMdd-HHmmss-fff");
@@ -36,12 +38,12 @@ namespace WPRestSharp.CT001
             var rndCategory = categories.ToArray()[new Random().Next(categories.Count() - 1) + 1];
 
             Console.WriteLine("記事投稿中 ...");
-            var newPost = wpSv.Posts.PostAsync(new WPRestPost()
+            var newPost = wpSv.Posts.PostAsync(new()
             {
                 Status = WPRestStatus.Publish,
                 Slug = DateTime.Now.ToString("yyyyMMdd-HHmmss-fff_") + Guid.NewGuid().ToString().Split('-').Last(),
                 Title = new WPRestRenderableText() { Raw = DateTime.Now + ": テスト記事" },
-                Content = new WPRestRenderableText() { Raw = "ほげえええええ" },
+                Content = new WPRestRenderableText() { Raw = "<h1>これは試験記事です</h1><p>段落段落段落段落段落段落段落段落<br/>2 行目！<br/></p><p>2 段落目段落段落段落段落段落段落段落</p>" },
                 Categories = new WPRestCategoryId[]
                 {
                     //new WPRestCategoryId() { Value = 0 },

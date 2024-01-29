@@ -19,6 +19,11 @@ namespace WPRestSharp
             return this.Value.ToString();
         }
 
+        public static implicit operator WPRestPostId(ulong value)
+        {
+            return new WPRestPostId() { Value = value };
+        }
+
         public class JsonConverter : JsonConverter<WPRestPostId>
         {
             public override WPRestPostId Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
